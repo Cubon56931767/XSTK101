@@ -1,0 +1,54 @@
+# Hypothesis Testing - One Sample t-test
+# H0: μ = 10 vs H1: μ ≠ 10
+# Significance level: α = 0.05
+
+# Sample data
+yields <- c(6.1, 9.2, 11.5, 8.6, 12.1, 3.9, 8.4, 10.1, 9.4, 8.9)
+
+# Hypothesized mean
+mu0 <- 10
+
+# Calculate sample statistics
+n <- length(yields)
+sample_mean <- mean(yields)
+sample_sd <- sd(yields)
+
+# Print sample statistics
+cat("Sample size (n):", n, "\n")
+cat("Sample mean (x̄):", round(sample_mean, 2), "\n")
+cat("Sample standard deviation (s):", round(sample_sd, 2), "\n\n")
+
+# Calculate test statistic
+t_statistic <- (sample_mean - mu0) / (sample_sd / sqrt(n))
+cat("Test statistic (t):", round(t_statistic, 2), "\n\n")
+
+# Degrees of freedom
+df <- n - 1
+
+# Critical value for two-tailed test at α = 0.05
+alpha <- 0.05
+critical_value <- qt(1 - alpha/2, df)
+cat("Critical value (t_0.025,9):", round(critical_value, 3), "\n\n")
+
+# P-value
+p_value <- 2 * pt(abs(t_statistic), df, lower.tail = FALSE)
+cat("P-value:", round(p_value, 4), "\n\n")
+
+# Decision
+cat("Decision rule: Reject H0 if |t| >", round(critical_value, 3), "\n")
+cat("Since |t| =", abs(round(t_statistic, 2)), 
+    ifelse(abs(t_statistic) > critical_value, ">", "<"), 
+    round(critical_value, 3), "\n")
+
+if (abs(t_statistic) > critical_value) {
+  cat("\nDecision: REJECT H0\n")
+  cat("Conclusion: There is sufficient evidence at the 5% significance level to conclude that the mean yield differs from 10%.\n")
+} else {
+  cat("\nDecision: FAIL TO REJECT H0\n")
+  cat("Conclusion: There is insufficient evidence at the 5% significance level to conclude that the mean yield differs from 10%.\n")
+}
+
+# Alternatively, using built-in t.test function
+cat("\n\n--- Using R's t.test() function ---\n")
+result <- t.test(yields, mu = mu0, alternative = "two.sided", conf.level = 0.95)
+print(result)
