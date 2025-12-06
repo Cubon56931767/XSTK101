@@ -1,0 +1,22 @@
+# 1. Nhập dữ liệu mẫu (Sample data)
+data <- c(6.1, 9.2, 11.5, 8.6, 12.1, 3.9, 8.4, 10.1, 9.4, 8.9)
+
+# 2. Thực hiện kiểm định t (t-test)
+# mu = 10: Giá trị trung bình cần kiểm định theo giả thuyết
+# alternative = "two.sided": Kiểm định 2 phía (khác 10)
+# conf.level = 0.95: Độ tin cậy 95% (tương ứng mức ý nghĩa 5%)
+result <- t.test(data, mu = 10, alternative = "two.sided", conf.level = 0.95)
+
+# 3. Hiển thị kết quả
+print(result)
+
+# --- (Phần phụ: Tính toán thủ công để đối chiếu với hình ảnh) ---
+sample_mean <- mean(data)
+sample_sd <- sd(data)
+n <- length(data)
+t_stat <- (sample_mean - 10) / (sample_sd / sqrt(n))
+
+cat("\n--- Đối chiếu các chỉ số ---")
+cat("\nTrung bình mẫu (Sample mean):", sample_mean)
+cat("\nĐộ lệch chuẩn (Sample SD):", round(sample_sd, 2))
+cat("\nGiá trị thống kê t (t-statistic):", round(t_stat, 2))
