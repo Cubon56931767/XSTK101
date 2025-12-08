@@ -1,0 +1,118 @@
+# ============================================================
+# DETAILED ONE-SAMPLE T-TEST IN R
+# Problem: Test if average North American is more than 20 pounds overweight
+# ============================================================
+
+# ------------------------------------------------------------
+# STEP 1: Enter the data
+# ------------------------------------------------------------
+overweight <- c(16, 23, 18, 41, 22, 18, 23, 19, 22, 15,
+                18, 35, 16, 15, 17, 19, 23, 15, 16, 26)
+
+cat("STEP 1: DATA\n")
+cat("============\n")
+cat("Data:", overweight, "\n\n")
+
+# ------------------------------------------------------------
+# STEP 2: State the hypotheses
+# ------------------------------------------------------------
+cat("STEP 2: HYPOTHESES\n")
+cat("==================\n")
+cat("H0: μ ≤ 20  (The average overweight is at most 20 pounds)\n")
+cat("H1: μ > 20  (The average overweight is MORE than 20 pounds)\n")
+cat("This is a ONE-TAILED (RIGHT-TAILED) test\n\n")
+
+# ------------------------------------------------------------
+# STEP 3: Set significance level
+# ------------------------------------------------------------
+alpha <- 0.05
+
+cat("STEP 3: SIGNIFICANCE LEVEL\n")
+cat("==========================\n")
+cat("α =", alpha, "(5%)\n\n")
+
+# ------------------------------------------------------------
+# STEP 4: Calculate sample statistics
+# ------------------------------------------------------------
+n <- length(overweight)
+xbar <- mean(overweight)
+s <- sd(overweight)
+se <- s / sqrt(n)
+
+cat("STEP 4: SAMPLE STATISTICS\n")
+cat("=========================\n")
+cat("n (sample size)          =", n, "\n")
+cat("x̄ (sample mean)          =", xbar, "\n")
+cat("s (sample std deviation) =", round(s, 4), "\n")
+cat("SE (standard error)      =", round(se, 4), "\n\n")
+
+# ------------------------------------------------------------
+# STEP 5: Degrees of freedom
+# ------------------------------------------------------------
+df <- n - 1
+
+cat("STEP 5: DEGREES OF FREEDOM\n")
+cat("==========================\n")
+cat("df = n - 1 =", df, "\n\n")
+
+# ------------------------------------------------------------
+# STEP 6: Find the REJECTION REGION
+# ------------------------------------------------------------
+t_critical <- qt(1 - alpha, df)
+
+cat("STEP 6: REJECTION REGION\n")
+cat("========================\n")
+cat("Critical value: t_0.05,19 =", round(t_critical, 4), "\n")
+cat("REJECTION REGION:     t >", round(t_critical, 4), "\n")
+cat("NON-REJECTION REGION: t ≤", round(t_critical, 4), "\n\n")
+
+# ------------------------------------------------------------
+# STEP 7: Calculate the TEST STATISTIC
+# ------------------------------------------------------------
+mu0 <- 20
+t_stat <- (xbar - mu0) / se
+
+cat("STEP 7: TEST STATISTIC\n")
+cat("======================\n")
+cat("Formula: t = (x̄ - μ0) / (s / √n)\n")
+cat("t = (", xbar, "-", mu0, ") / (", round(se, 4), ")\n")
+cat("t =", round(t_stat, 4), "\n\n")
+
+# ------------------------------------------------------------
+# STEP 8: Calculate the P-VALUE
+# ------------------------------------------------------------
+p_value <- 1 - pt(t_stat, df)
+
+cat("STEP 8: P-VALUE\n")
+cat("===============\n")
+cat("p-value = P(T >", round(t_stat, 4), ") =", round(p_value, 4), "\n\n")
+
+# ------------------------------------------------------------
+# STEP 9: DECISION
+# ------------------------------------------------------------
+cat("STEP 9: DECISION\n")
+cat("================\n")
+
+# Method 1: Critical Value
+cat("METHOD 1 - Critical Value:\n")
+cat("t =", round(t_stat, 4), "≤ t_critical =", round(t_critical, 4), "\n")
+cat("→ FAIL TO REJECT H0\n\n")
+
+# Method 2: P-value
+cat("METHOD 2 - P-value:\n")
+cat("p-value =", round(p_value, 4), "≥ α =", alpha, "\n")
+cat("→ FAIL TO REJECT H0\n\n")
+
+# ------------------------------------------------------------
+# STEP 10: CONCLUSION
+# ------------------------------------------------------------
+cat("STEP 10: CONCLUSION\n")
+cat("===================\n")
+cat("At the 5% significance level, there is NOT sufficient\n")
+cat("evidence to support the doctor's claim.\n\n")
+
+# ------------------------------------------------------------
+# VERIFICATION using t.test()
+# ------------------------------------------------------------
+cat("VERIFICATION:\n")
+print(t.test(overweight, mu = 20, alternative = "greater"))

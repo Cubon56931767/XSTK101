@@ -1,0 +1,33 @@
+# One-sample t-test for overweight data
+# H0: μ ≤ 20 (average overweight is not more than 20 pounds)
+# H1: μ > 20 (average overweight is more than 20 pounds)
+
+# Enter the data
+overweight <- c(16, 23, 18, 41, 22, 18, 23, 19, 22, 15,
+                18, 35, 16, 15, 17, 19, 23, 15, 16, 26)
+
+# Sample statistics
+n <- length(overweight)
+sample_mean <- mean(overweight)
+sample_sd <- sd(overweight)
+
+cat("Sample size (n):", n, "\n")
+cat("Sample mean:", sample_mean, "\n")
+cat("Sample standard deviation:", sample_sd, "\n")
+
+# Perform one-sample t-test (right-tailed)
+t_test_result <- t.test(overweight, mu = 20, alternative = "greater")
+
+# Display results
+cat("\n--- One-Sample t-Test Results ---\n")
+cat("Test statistic (t):", t_test_result$statistic, "\n")
+cat("Degrees of freedom:", t_test_result$parameter, "\n")
+cat("P-value:", t_test_result$p.value, "\n")
+
+# Decision at 5% significance level
+alpha <- 0.05
+if (t_test_result$p.value < alpha) {
+  cat("Conclusion: REJECT H0 - Evidence supports the doctor's claim.\n")
+} else {
+  cat("Conclusion: FAIL TO REJECT H0 - Insufficient evidence.\n")
+}
